@@ -13,7 +13,7 @@ gem 'kaminari'
 # User Auth
 # I'll just make my own
 gem 'bcrypt'
-# gem 'devise'
+# gem 'devise' # can't get authentication with auth_token with devise
 # gem 'simple_token_authentication'
 # gem 'rails_12factor', group: :production # tweaks for devise to work on heroku
 
