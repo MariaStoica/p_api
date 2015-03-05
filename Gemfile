@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.2.0'
+
 gem 'rails', '4.0.4'
 gem 'sass-rails', '~> 4.0.2'
 gem 'bootstrap-sass', '2.3.2.0'
@@ -9,6 +11,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 gem 'kaminari'
+
+# for having images in the database
+gem "paperclip", "~> 4.2"
 
 # User Auth
 # I'll just make my own

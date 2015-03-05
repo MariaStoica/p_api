@@ -5,10 +5,47 @@
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
+
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
+  <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 
-<%= yield %>
+<!-- bara de sus -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<!-- home and api calls -->
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<b><%= link_to "Data Base", root_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
+			</div>
+			<div class="navbar-header">
+				<b><%= link_to "API calls", root_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
+			</div>
+		<!-- sign in sign out -->
+		<% if logged_in? %>
+			<div class="navbar-header navbar-right">
+				<b><%= link_to "Salut, " + current_user.first_name, root_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
+			</div>
+			<div class="navbar-header navbar-right">
+				<b><%= link_to "Sign out", logout_path, method: "delete", class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px"%></b>
+			</div>
+		<% else %>
+			<div class="navbar-header navbar-right">
+				<b><%= link_to "Sign in", login_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
+			</div>
+		<% end %>	
+
+		</div>
+	</div>
+
+	<p class="notice"><%= notice %></p>
+   	<p class="alert"><%= alert %></p>
+
+	<div style="position:relative; left:20px">
+		<%= yield %>
+	</div>
+
 
 </body>
 </html>
