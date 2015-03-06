@@ -34,3 +34,31 @@ Users
 </table>
 
 <br/><br/>
+
+<!-- interests -->
+Interests
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Category Id</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Interest.all.each do |interest| %>
+			<tr>
+				<td><%= interest.id %></td>
+				<td><%= interest.name %></td>
+				<td>
+					<% if interest.category_id %>
+						<%= Interest.find(interest.category_id).name %> (<%= interest.category_id %>)
+					<% else %>
+						-
+					<% end %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
