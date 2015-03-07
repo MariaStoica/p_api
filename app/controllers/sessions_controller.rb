@@ -24,11 +24,51 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    # current_user.delete_auth_token
-    # delete the token from the Api_keys table
-    ApiKey.find_by_user_id(current_user.id).destroy
-    # log out
-    log_out
-    redirect_to login_path
-  end
+    # logging in through api calls doesn't create a current_user or a session[:user_id]. that's why you need the access token 
+    # so... when you make api calls based on the auth_token (which actually tells you who is requesting) you should set current_user based on the acc_token provided
+    # params.permit(:acc_token, :phone_number)
+    # puts 'params = ' + params.to_s
+
+
+    if params[:acc_token]
+      # if params[:phone_number]
+        if ApiKey.find_by_access_token(params[:acc_token])
+          # if params[:phone_number] == User.find( ApiKey.find_by_access_token(params[:acc_token]).user_id ).phone_number
+            ApiKey.find_by_access_token(params[:acc_token]).destroy
+            log_out 
+
+            respond_to do |format|
+              format.html { redirect_to login_path }
+              format.json { render :json => {:success=>true, :message=>"The user has been logged out"} }
+            end
+        
+          # else # if params phone_number == ce nr are userul
+          #   respond_to do |format|
+          #     format.html { redirect_to login_path }
+          #     format.json { render :json => {:success=>false, :message=>"Logout failed - phone_number and acc_token are not from the same user"} }
+          #   end
+          # end
+
+        else # if ApiKey are acc_tokenul pasat
+          respond_to do |format|
+            format.html { redirect_to login_path }
+            format.json { render :json => {:success=>false, :message=>"Logout failed - no acc_token found in db"} }
+          end        
+        end
+
+      # else # if params phone_number
+      #   respond_to do |format|
+      #     format.html { redirect_to login_path }
+      #     format.json { render :json => {:success=>false, :message=>"Logout failed - no phone_number in params"} }
+      #   end  
+      # end
+    else # if params acc_token
+      respond_to do |format|
+        format.html { redirect_to login_path }
+        format.json { render :json => {:success=>false, :message=>"Logout failed - no acc_token in params"} }
+      end
+    end
+
+  end # end of destroy
+
 end
