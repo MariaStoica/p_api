@@ -9,6 +9,7 @@ Users
 	<thead>
 		<tr>
 			<th>Id</th>
+			<th>Avatar</th>
 			<th>FirstName</th>
 			<th>LastName</th>
 			<th>PhoneNumber</th>
@@ -19,6 +20,7 @@ Users
 		<% User.all.each do |user| %>
 			<tr>
 				<td><%= user.id %></td>
+				<td><%= image_tag user.avatar.url(:thumb) %></td>
 				<td><%= user.first_name %></td>
 				<td><%= user.last_name %></td>
 				<td><%= user.phone_number %></td>

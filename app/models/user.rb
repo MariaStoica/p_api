@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
 
     #password
     has_secure_password
-    validates :password, length: { minimum: 8 } # will delete when sms code login is integrated
+    # validates :password, length: { minimum: 8 } # will delete when sms code login is integrated
+    # edit not working if I leave validate password length
 
 end

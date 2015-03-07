@@ -23,13 +23,21 @@
     <%= f.label :phone_number %><br>
     <%= f.text_field :phone_number %>
   </div>
+  <!-- <div class="field"> -->
+    <!-- <= f.label :password_digest %><br> -->
+    <!-- <= f.text_field :password_digest %> -->
+  <!-- </div> -->
   <div class="field">
-    <%= f.label :password_digest %><br>
-    <%= f.text_field :password_digest %>
+  <%= f.label :password %>
+  <%= f.password_field :password %>
+  </div>
+  <div class="field">
+  <%= f.label :password_confirmation, "Confirmation" %>
+  <%= f.password_field :password_confirmation %>
   </div>
   <div class="field">
     <%= f.label :avatar %><br>
-    <%= f.text_field :avatar %>
+    <%= f.file_field :avatar %>
   </div>
   <div class="field">
     <%= f.label :description %><br>

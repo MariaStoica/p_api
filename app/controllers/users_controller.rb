@@ -29,10 +29,13 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        # format.json { render :show, status: :created, location: @user }
+        format.json { render :json => {:success=>true, :message=>"User was successfully created.", :id=>@user.id} }
+        # TODO: dupa ce creez userul ar trebui sa il si loghez - sa ii dau un token ca raspuns aici la sign up
       else
         format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        # format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render :json => {:success=>false, :message=>"Failed to create user."} }
       end
     end
   end
@@ -69,6 +72,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :phone_number, :password_digest, :avatar, :description)
+      params.require(:user).permit(:first_name, :last_name, :phone_number, :password_digest, :password, :password_confirmation, :avatar, :description)
     end
+
 end

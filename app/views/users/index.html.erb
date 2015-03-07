@@ -6,7 +6,7 @@
       <th>First name</th>
       <th>Last name</th>
       <th>Phone number</th>
-      <th>Password digest</th>
+      <!-- <th>Password digest</th> -->
       <th>Avatar</th>
       <th>Description</th>
       <th></th>
@@ -21,8 +21,8 @@
         <td><%= user.first_name %></td>
         <td><%= user.last_name %></td>
         <td><%= user.phone_number %></td>
-        <td><%= user.password_digest %></td>
-        <td><%= user.avatar %></td>
+        <!-- <td><= user.password_digest %></td> -->
+        <td><%= image_tag user.avatar.url(:thumb) %></td>
         <td><%= user.description %></td>
         <td><%= link_to 'Show', user %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
