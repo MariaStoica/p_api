@@ -10,9 +10,10 @@ module SessionsHelper
 	def current_user
 		if session[:user_id]
 			@current_user = User.find(session[:user_id])
+		else
+			api_key = ApiKey.where(access_token: token_and_options(request)).first
+			@current_user = User.find(api_key.user_id) if api_key
 		end
-		# api_key = ApiKey.where(access_token: token_and_options(request)).first
-		# @current_user = User.find(api_key.user_id) if api_key
 	end
 
 	# Returns true if the user is logged in, false otherwise.

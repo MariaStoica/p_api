@@ -10,4 +10,8 @@ class HomeController < ApplicationController
   	@interests = Interest.where(category_id: params[:interest_category_id])
   end
 
+  def get_interests_of_current_user
+  	@interests = current_user.interests
+  end
+
 end

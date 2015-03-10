@@ -10,7 +10,8 @@ PenginApi::Application.routes.draw do
 	delete 'logout'  => 'sessions#destroy'
 
 	get 'interest_categories' => 'home#get_interest_categories'
-	get 'interest_of_category' => 'home#get_interests_of_category'
+	get 'interests_of_category' => 'home#get_interests_of_category'
+	get 'my_interests' => 'home#get_interests_of_current_user'
 
 	resources :api_keys
 	resources :users
