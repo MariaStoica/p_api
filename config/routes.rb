@@ -9,6 +9,9 @@ PenginApi::Application.routes.draw do
 	post   'login'   => 'sessions#create'
 	delete 'logout'  => 'sessions#destroy'
 
+	get 'interest_categories' => 'home#get_interest_categories'
+	get 'interest_of_category' => 'home#get_interests_of_category'
+
 	resources :api_keys
 	resources :users
 
