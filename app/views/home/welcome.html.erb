@@ -86,8 +86,8 @@ User Interests
 		<% UserInterest.all.each do |ui| %>
 			<tr>
 				<td><%= ui.id %></td>
-				<td><%= User.find(ui.user_id).first_name %></td>
-				<td><%= Interest.find(ui.interest_id).name %></td>
+				<td><%= User.find(ui.user_id).first_name %> (<%= ui.user_id %>)</td>
+				<td><%= Interest.find(ui.interest_id).name %> (<%= ui.interest_id %>)</td>
 			</tr>
 		<% end %>
 	</tbody>
