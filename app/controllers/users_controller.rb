@@ -86,18 +86,18 @@ class UsersController < ApplicationController
           end
 
 
-          format.html { redirect_to @user, notice: 'User was successfully updated.' }
+          format.html { redirect_to @user, notice: 'User and user interests was successfully updated.' }
           format.json { render :json => {:success=>true, :message=>"User and user interests was successfully updated."} }
         else
-          format.html { redirect_to @user, notice: 'User was successfully updated.' }
+          format.html { redirect_to @user, notice: 'User was successfully updated. No user interests detected.' }
           format.json { render :json => {:success=>true, :message=>"User was successfully updated. No user interests detected."} }
-        end
+        end # end of if params
       else
         format.html { render :edit }
         format.json { render :json => {:success=>false, :message=>"User could not be updated."} }
-      end
-    end
-  end
+      end # end of if .update
+    end # end of respond
+  end # end of method update
 
   # DELETE /users/1
   # DELETE /users/1.json

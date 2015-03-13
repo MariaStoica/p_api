@@ -8,6 +8,7 @@ PenginApi::Application.routes.draw do
 	get 'interest_categories' => 'home#get_interest_categories'
 	get 'interests_of_category' => 'home#get_interests_of_category'
 	get 'my_interests' => 'home#get_interests_of_current_user'
+	post 'edit_my_interests' => 'home#edit_user_interests_only_for_current_user'
 
 	resources :api_keys
 	resources :users

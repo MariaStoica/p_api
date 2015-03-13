@@ -117,7 +117,7 @@ Answer:
 
 ###4. Get profile info
 
-**GET** http://pengin-api.herokuapp.com/users/:id
+**GET** http://pengin-api.herokuapp.com/users/[:id]
 
 *Header:*
 
@@ -172,6 +172,11 @@ At least one of user's attributes (mandatory)
 * description
 * password
 * password_confirmation
+
+* user_interest[] = [:desired_interest_id]
+* user_interest[] = [:desired_interest_id]
+* user_interest[] = [:desired_interest_id]
+* ...
 
 How many interest ids you want. It can be none. (optional)
 The interest ids passed must belong to the interests the user wants. The new interests are added to the user's list of interests and the ones that are not passed will be deleted if they occured previously in the user's list.
@@ -298,11 +303,46 @@ Answer:
 ---
 
 
-###9. Edit user interests (mandatory)
+###9. Edit user interests only
 
-separate link just for interests
+*separate link just for interests in case no user data is altered (so it doesn't depend on user edit)*
 
-*TODO*
+**POST** http://pengin-api.herokuapp.com/edit_my_interests
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token]'
+
+*Body:*
+
+* user_interest[] = [:desired_interest_id]
+* user_interest[] = [:desired_interest_id]
+* user_interest[] = [:desired_interest_id]
+* ...
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0MJCmIu6vxzQtFr_AOWf5w' -X POST 'http://pengin-api.herokuapp.com/edit_my_interests' -F "user_interests[]=10" -F "user_interests[]=9"
+```
+
+Answer:
+
+```
+{"success":true,"message":"UserInterests were successfully updated."}
+
+or
+
+{"success":false,"message":"No user interests detected."}
+
+or if the token is damaged
+
+{"success":false,"message":"Something's wrong with the auth_token. Current_user is nil."}
+```
 
 
 ---
@@ -329,4 +369,21 @@ separate link just for interests
 ###12. My feed
 
 *TODO*
+
+
+---
+
+
+###13. Edit activity
+
+*TODO*
+
+
+---
+
+
+###14. Delete activity
+
+*TODO*
+
 
