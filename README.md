@@ -172,7 +172,6 @@ At least one of user's attributes (mandatory)
 * description
 * password
 * password_confirmation
-
 * user_interest[] = [:desired_interest_id]
 * user_interest[] = [:desired_interest_id]
 * user_interest[] = [:desired_interest_id]
@@ -352,7 +351,43 @@ or if the token is damaged
 
 ###10. Create activity
 
-*TODO*
+**POST** http://pengin-api.herokuapp.com/activities
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token]'
+
+*Body:*
+
+* name
+* location
+* time (datetime)
+* nrofpeopleinvited
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -F "activity[name]=Dog chase" -F "activity[location]=Parcul Tineretului" -F "activity[time]=2015-03-20T06:50:37.283Z" -F "activity[nrofpeopleinvited]=2" 'http://pengin-api.herokuapp.com/activities'
+```
+
+Answer:
+
+```
+{
+	"id":4,
+	"name":"Dog chase",
+	"user_id":1,
+	"location":"Parcul Tineretului",
+	"time":"2015-03-20T06:50:37.283Z",
+	"nrofpeopleinvited":2,
+	"created_at":"2015-03-15T07:16:00.416Z",
+	"updated_at":"2015-03-15T07:16:00.416Z"
+}
+```
 
 
 ---
@@ -360,7 +395,41 @@ or if the token is damaged
 
 ###11. My activities
 
-*TODO*
+*returns 2 json arrays - the first one has the activities I created, even if I am not going to them - and the second one has all the activities I am going to*
+
+**GET** http://pengin-api.herokuapp.com/my_activities
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token]'
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' GET 'http://pengin-api.herokuapp.com/my_activities'
+```
+
+Answer:
+
+```
+{
+	"activities_i_created!":
+	[
+		{"id":3,"name":"Light Jogging","location":"Parcul Tineretului","time":"2015-03-20T06:50:37.283Z","nrofpeopleinvited":2},
+		{"id":5,"name":"Kite flying","location":"Malul Marii Negre","time":"2015-03-20T06:50:37.283Z","nrofpeopleinvited":2}
+	],
+	"activities_im_going_to!":
+	[
+		{"id":3,"name":"Light Jogging","user_id":1,"location":"Parcul Tineretului","time":"2015-03-20T06:50:37.283Z","nrofpeopleinvited":2},
+		{"id":5,"name":"Kite flying","user_id":1,"location":"Malul Marii Negre","time":"2015-03-20T06:50:37.283Z","nrofpeopleinvited":2},
+		{"id":9,"name":"Tennis Championship Attend","user_id":6,"location":"Wimbledon, London","time":"2015-03-19T06:52:00.000Z","nrofpeopleinvited":7}
+	]
+}
+```
 
 
 ---
@@ -368,7 +437,33 @@ or if the token is damaged
 
 ###12. My feed
 
-*TODO*
+*returns the activities of those people with 2 or more interests in common with current_user*
+
+**GET** http://pengin-api.herokuapp.com/my_feed
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token]'
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' GET 'http://pengin-api.herokuapp.com/my_feed'
+```
+
+Answer:
+
+```
+[
+	{"id":7,"name":"Play Go","user_id":5,"location":"BCU","time":"2015-03-20T06:50:00.000Z","nrofpeopleinvited":3},
+	{"id":8,"name":"Kafka books discussion","user_id":5,"location":"BCU","time":"2015-03-18T06:51:00.000Z","nrofpeopleinvited":7},
+	{"id":9,"name":"Tennis Championship Attend","user_id":6,"location":"Wimbledon, London","time":"2015-03-19T06:52:00.000Z","nrofpeopleinvited":7}
+]
+```
 
 
 ---
@@ -376,7 +471,36 @@ or if the token is damaged
 
 ###13. Edit activity
 
-*TODO*
+**PATCH** http://pengin-api.herokuapp.com/activities/[:id]
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token_of_activity_owner]'
+
+*Body:*
+
+At least one of these attributes
+
+* name
+* location
+* time
+* nrofpeopleinvited
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Accept: application/json' -X PATCH 'http://pengin-api.herokuapp.com/activities/2' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -d 'activity[location]=Strada cu Pisici'
+```
+
+Answer:
+
+```
+{"success":true,"message":"Activity was successfully updated."}
+```
 
 
 ---
@@ -384,6 +508,26 @@ or if the token is damaged
 
 ###14. Delete activity
 
-*TODO*
+**DELETE** http://pengin-api.herokuapp.com/activities/[:id]
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token_of_activity_owner]'
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Accept: application/json' -X DELETE 'http://pengin-api.herokuapp.com/activities/4' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w'
+```
+
+Answer:
+
+```
+{"success":true,"message":"Activity was successfully destroyed."}
+```
 
 

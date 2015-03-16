@@ -11,7 +11,13 @@ class HomeController < ApplicationController
   end
 
   def get_interests_of_current_user
-  	@interests = current_user.interests
+    if current_user
+    	@interests = current_user.interests
+    else
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"Something's wrong with the auth_token. Current_user is nil."} }
+      end
+    end
   end
 
   def edit_user_interests_only_for_current_user
@@ -68,6 +74,41 @@ class HomeController < ApplicationController
       end
 
     end # end of current user
+  end
+
+  def get_my_activities
+    # TODO: and the ones I'm going to - check for collisions - eg: same day, 1h appart, same hour!!
+    # TODO: add is_cancelled column to the activity model
+    if current_user
+      # the activities I am the owner to
+      @activities_i_created = Activity.where(user_id: current_user.id)
+      @activities_im_going_to = Activity.where(id: Goingtoactivity.where(user_id: current_user.id).pluck(:activity_id))
+    else
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"Something's wrong with the auth_token. Current_user is nil."} }
+      end
+    end
+  end
+
+  def get_my_feed
+    # where the magic happens
+    if current_user
+      # get your interests
+      my_interest_ids = UserInterest.where(user_id: current_user.id).pluck(:interest_id)
+      
+      # get the people who have 2 or more interests in common with you
+      # TODO: separate users in common by interest?
+      # TODO: group them by the number of interests - 2 with these, 3 with these, 6 with these!
+      user_ids = UserInterest.where(interest_id: my_interest_ids).where.not(user_id: current_user.id).group(:user_id).having("COUNT(*) >= 2").pluck(:user_id)
+
+      # get their activities
+      @my_feed = Activity.where(user_id: user_ids)
+      # puts 'my_feed = ' + @my_feed.to_json
+    else
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"Something's wrong with the auth_token. Current_user is nil."} }
+      end
+    end
   end
 
 end

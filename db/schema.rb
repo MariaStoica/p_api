@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306071357) do
+ActiveRecord::Schema.define(version: 20150313163750) do
+
+  create_table "activities", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.string   "location"
+    t.datetime "time"
+    t.integer  "nrofpeopleinvited"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["user_id"], name: "index_activities_on_user_id"
 
   create_table "api_keys", force: true do |t|
     t.string   "access_token"
@@ -22,6 +34,16 @@ ActiveRecord::Schema.define(version: 20150306071357) do
   end
 
   add_index "api_keys", ["user_id"], name: "index_api_keys_on_user_id"
+
+  create_table "goingtoactivities", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "activity_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "goingtoactivities", ["activity_id"], name: "index_goingtoactivities_on_activity_id"
+  add_index "goingtoactivities", ["user_id"], name: "index_goingtoactivities_on_user_id"
 
   create_table "interests", force: true do |t|
     t.string   "name"
