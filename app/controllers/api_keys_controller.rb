@@ -1,4 +1,5 @@
 class ApiKeysController < ApplicationController
+  before_action :authenticate
   before_action :set_api_key, only: [:show, :edit, :update, :destroy]
 
   # GET /api_keys

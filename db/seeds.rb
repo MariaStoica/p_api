@@ -73,6 +73,10 @@ Activity.create(name: "Kite flying", user_id: 5, location: "Plaja H2O, statiunea
 Activity.create(name: "Tennis Championship Attendance", user_id: 4, location: "Wimbledon, London", time: "2015-03-24 06:50:37", nrofpeopleinvited: 5)
 
 # going to activity
+Goingtoactivity.create(user_id: 2,activity_id: 1)
+Goingtoactivity.create(user_id: 3,activity_id: 2)
+Goingtoactivity.create(user_id: 1,activity_id: 3)
+Goingtoactivity.create(user_id: 5,activity_id: 4)
 Goingtoactivity.create(user_id: 3,activity_id: 1)
 Goingtoactivity.create(user_id: 4,activity_id: 2)
 Goingtoactivity.create(user_id: 5,activity_id: 3)

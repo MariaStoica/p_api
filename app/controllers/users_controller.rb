@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :authenticate
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -43,60 +44,66 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
+    # only the owner can edit his / her profile info
+    if current_user.id == @user.id
+      respond_to do |format|
+        if @user.update(user_params)
 
-        # update the user interests, too
-        if params[:user_interests]
+          # update the user interests, too
+          if params[:user_interests]
 
-          param_interests = []
+            param_interests = []
 
-          # transform the params into integers so they can be compared to the ids
-          params[:user_interests].each do |i|
-            param_interests << i.to_i
-          end
-
-          # puts "INTERESTS PARAMS = " + param_interests.to_s + "\n"
-
-          # get current user_interests
-          current_user_interest_ids = current_user.interests.pluck(:id)
-          # puts "CURRENT INTERESTS = " + current_user_interest_ids.to_s + "\n"
-
-          # the ids in params list that are not in current list need to be added
-          interests_to_add = param_interests - current_user_interest_ids
-          # puts "INTERESTS TO ADD = " + interests_to_add.to_s + "\n"
-
-          if interests_to_add.count > 0
-            interests_to_add.each do |interest_id|
-              UserInterest.create(user_id: current_user.id, interest_id: interest_id)
+            # transform the params into integers so they can be compared to the ids
+            params[:user_interests].each do |i|
+              param_interests << i.to_i
             end
-          end
 
-          # the ids in current list that are not in params list need to be deleted from user_interests
-          interests_to_delete = current_user_interest_ids - param_interests
-          # puts "INTERESTS TO DELETE = " + interests_to_delete.to_s + "\n"
+            # puts "INTERESTS PARAMS = " + param_interests.to_s + "\n"
 
-          if interests_to_delete.count > 0
-            interests_to_delete.each do |interest_id|
-              u = UserInterest.where(user_id: current_user.id, interest_id: interest_id)
-              if u
-                u.first.destroy
+            # get current user_interests
+            current_user_interest_ids = current_user.interests.pluck(:id)
+            # puts "CURRENT INTERESTS = " + current_user_interest_ids.to_s + "\n"
+
+            # the ids in params list that are not in current list need to be added
+            interests_to_add = param_interests - current_user_interest_ids
+            # puts "INTERESTS TO ADD = " + interests_to_add.to_s + "\n"
+
+            if interests_to_add.count > 0
+              interests_to_add.each do |interest_id|
+                UserInterest.create(user_id: current_user.id, interest_id: interest_id)
               end
             end
-          end
 
+            # the ids in current list that are not in params list need to be deleted from user_interests
+            interests_to_delete = current_user_interest_ids - param_interests
+            # puts "INTERESTS TO DELETE = " + interests_to_delete.to_s + "\n"
 
-          format.html { redirect_to @user, notice: 'User and user interests was successfully updated.' }
-          format.json { render :json => {:success=>true, :message=>"User and user interests was successfully updated."} }
+            if interests_to_delete.count > 0
+              interests_to_delete.each do |interest_id|
+                u = UserInterest.where(user_id: current_user.id, interest_id: interest_id)
+                if u
+                  u.first.destroy
+                end
+              end
+            end
+
+            format.html { redirect_to @user, notice: 'User and user interests was successfully updated.' }
+            format.json { render :json => {:success=>true, :message=>"User and user interests was successfully updated."} }
+          else
+            format.html { redirect_to @user, notice: 'User was successfully updated. No user interests detected.' }
+            format.json { render :json => {:success=>true, :message=>"User was successfully updated. No user interests detected."} }
+          end # end of if params
         else
-          format.html { redirect_to @user, notice: 'User was successfully updated. No user interests detected.' }
-          format.json { render :json => {:success=>true, :message=>"User was successfully updated. No user interests detected."} }
-        end # end of if params
-      else
-        format.html { render :edit }
-        format.json { render :json => {:success=>false, :message=>"User could not be updated."} }
-      end # end of if .update
-    end # end of respond
+          format.html { render :edit }
+          format.json { render :json => {:success=>false, :message=>"User could not be updated."} }
+        end # end of if .update
+      end # end of respond
+    else
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"You are not the owner of this profile."} }
+      end
+    end
   end # end of method update
 
   # DELETE /users/1

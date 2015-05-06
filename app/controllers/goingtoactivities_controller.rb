@@ -1,4 +1,5 @@
 class GoingtoactivitiesController < ApplicationController
+  before_action :authenticate
   before_action :set_goingtoactivity, only: [:show, :edit, :update, :destroy]
 
   # GET /goingtoactivities
@@ -24,15 +25,31 @@ class GoingtoactivitiesController < ApplicationController
   # POST /goingtoactivities
   # POST /goingtoactivities.json
   def create
-    @goingtoactivity = Goingtoactivity.new(goingtoactivity_params)
+    # puts "!!! goingtoactivity_params " + goingtoactivity_params.to_s
+    # puts "\n"
+    # puts "!!! params " + params.to_s
+    # !!! goingtoactivity_params {"user_id"=>"1", "activity_id"=>"9"}
+    # !!! params {"goingtoactivity"=>{"user_id"=>"1", "activity_id"=>"9"}, "action"=>"create", "controller"=>"goingtoactivities"}
 
-    respond_to do |format|
-      if @goingtoactivity.save
-        format.html { redirect_to @goingtoactivity, notice: 'Goingtoactivity was successfully created.' }
-        format.json { render :show, status: :created, location: @goingtoactivity }
-      else
-        format.html { render :new }
-        format.json { render json: @goingtoactivity.errors, status: :unprocessable_entity }
+    # only the owner can edit his / her activity
+    if current_user.id == goingtoactivity_params[:user_id].to_i
+      # params is the same with goingtoactivity params? otherwise could be a crack
+      # print goigntoactivity params to see what they look like
+
+      @goingtoactivity = Goingtoactivity.new(goingtoactivity_params)
+
+      respond_to do |format|
+        if @goingtoactivity.save
+          format.html { redirect_to @goingtoactivity, notice: 'Goingtoactivity was successfully created.' }
+          format.json { render :show, status: :created, location: @goingtoactivity }
+        else
+          format.html { render :new }
+          format.json { render json: @goingtoactivity.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"You are not the owner of this goingtoactivity."} }
       end
     end
   end
@@ -40,13 +57,19 @@ class GoingtoactivitiesController < ApplicationController
   # PATCH/PUT /goingtoactivities/1
   # PATCH/PUT /goingtoactivities/1.json
   def update
-    respond_to do |format|
-      if @goingtoactivity.update(goingtoactivity_params)
-        format.html { redirect_to @goingtoactivity, notice: 'Goingtoactivity was successfully updated.' }
-        format.json { render :show, status: :ok, location: @goingtoactivity }
-      else
-        format.html { render :edit }
-        format.json { render json: @goingtoactivity.errors, status: :unprocessable_entity }
+    if current_user.id == @goingtoactivity.user_id
+      respond_to do |format|
+        if @goingtoactivity.update(goingtoactivity_params)
+          format.html { redirect_to @goingtoactivity, notice: 'Goingtoactivity was successfully updated.' }
+          format.json { render :show, status: :ok, location: @goingtoactivity }
+        else
+          format.html { render :edit }
+          format.json { render json: @goingtoactivity.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"You are not the owner of this goingtoactivity."} }
       end
     end
   end
@@ -54,10 +77,15 @@ class GoingtoactivitiesController < ApplicationController
   # DELETE /goingtoactivities/1
   # DELETE /goingtoactivities/1.json
   def destroy
-    @goingtoactivity.destroy
-    respond_to do |format|
-      format.html { redirect_to goingtoactivities_url, notice: 'Goingtoactivity was successfully destroyed.' }
-      format.json { head :no_content }
+    if current_user.id == @goingtoactivity.user_id
+      @goingtoactivity.destroy
+      respond_to do |format|
+        format.json { render :json => {:success=>true, :message=>"Goingtoactivity was successfully destroyed."} }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"You are not the owner of this goingtoactivity."} }
+      end
     end
   end
 
