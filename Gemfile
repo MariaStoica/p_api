@@ -12,6 +12,8 @@ gem 'turbolinks'
 gem 'jbuilder'
 gem 'kaminari'
 
+gem 'puma' # for aws
+
 gem 'sqlite3'
 
 # for having images in the database
