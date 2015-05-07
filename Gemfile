@@ -12,6 +12,8 @@ gem 'turbolinks'
 gem 'jbuilder'
 gem 'kaminari'
 
+gem 'sqlite3'
+
 # for having images in the database
 gem "paperclip", "~> 4.2"
 
@@ -27,14 +29,14 @@ group :doc do
 end
 
 group :development, :test do
-  gem 'sqlite3'
+  
   gem 'byebug'
   gem 'web-console'
   gem 'spring'
 end
 
 group :production do
-  gem 'pg'
+  #gem 'pg'
   gem 'rails_12factor'
   #gem 'unicorn'
 end
