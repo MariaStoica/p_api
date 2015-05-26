@@ -65,7 +65,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://localhost:3000/request_sms -d '{ "country_code" : "+40", "phone_number" : "724017240" }'
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/request_sms -d '{ "country_code" : "+40", "phone_number" : "724017240" }'
 ```
 
 Answer:
