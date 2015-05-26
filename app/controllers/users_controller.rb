@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate, except: :create
+  before_action :authenticate, except: [:create, :request_sms_for_login]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -52,26 +52,44 @@ class UsersController < ApplicationController
     return ["SAURON","SMAUG","BILBO","RING","FRODO","MORDOR","THE SHIRE","HOBBIT","FANGORN","ELVEN","THE FORCE","STAR WARS","VADER","DARTH","YODA","SKYWALKER"].sample
   end
 
-
-  # TODO: resend method and route 
-  # def resend
-  #   @user = User.find(params[:id])
-  #   Authy::API.request_sms(id: @user.authy_id)
-  #   # TODO: json response
-  #   # flash[:notice] = "Verification code re-sent"
-  #   # redirect_to verify_path
-  # end
-
   def send_message(message, user)
     @user = user
     twilio_number = '+14845772911'
     @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
-    message = @client.account.messages.create(
+    if message = @client.account.messages.create(
       :from => twilio_number,
       :to => @user.country_code+@user.phone_number,
       :body => message
     )
-    puts message.to
+
+      respond_to do |format|
+        format.json { render :json => {:success=>true, :message=>"SMS sent."} }
+      end
+    
+    else
+    
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"Could not send SMS."} }
+      end
+
+    end
+  end
+
+  def request_sms_for_login
+    user = User.find_by(phone_number: params[:phone_number], country_code: params[:country_code])
+
+    if user
+      password = give_me_pengin_password
+      user.update(password: password)
+      user.update(password_confirmation: password)
+
+      #send sms with our own password
+      send_message("Greetings from PengIn! Your password is " + password, user)
+    else
+      respond_to do |format|
+        format.json { render :json => {:success=>false, :message=>"User does not exist. Sign up, perhaps?"} }
+      end
+    end
   end
 
 

@@ -1,4 +1,4 @@
-# Pengin API (final - March 2015)
+# Pengin API
 
 ##Users:
 
@@ -45,8 +45,44 @@ Answer:
 
 ###2. Login
 
+
 ####Step 1 - request a sms password
 
+**POST** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/request_sms
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+
+*Body:*
+
+* country_code
+* phone_number
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://localhost:3000/request_sms -d '{ "country_code" : "+40", "phone_number" : "724017240" }'
+```
+
+Answer:
+
+```
+{
+	"success":true,
+	"message":"SMS sent."
+}
+
+or
+
+{
+	"success":false,
+	"message":"Could not send SMS."
+}
+```
 
 
 ####Step 2 - verify the sms password
@@ -117,7 +153,7 @@ or
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X DELETE http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/logout -H 'Authorization: Token token=4FHcyehbIlpALoUGBecuDA'
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X DELETE http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/logout?acc_token=PcKwIskef0ZwAMkHkbRSFw
 ```
 
 Answer:
