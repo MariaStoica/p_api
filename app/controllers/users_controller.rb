@@ -27,19 +27,53 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
+    @user.verified = false
+
+    password = give_me_pengin_password
+    @user.password = password
+    @user.password_confirmation = password
+
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        # format.json { render :show, status: :created, location: @user }
+
+        #send sms with our own password
+        send_message("Greetings from PengIn! Your password is " + password, @user)
+
         format.json { render :json => {:success=>true, :message=>"User was successfully created.", :id=>@user.id} }
         # TODO: dupa ce creez userul ar trebui sa il si loghez - sa ii dau un token ca raspuns aici la sign up
+        # in the Pengin mobile app, use the id passed in the json response to the sign up to identify which user you are verifying the sms
       else
-        format.html { render :new }
-        # format.json { render json: @user.errors, status: :unprocessable_entity }
         format.json { render :json => {:success=>false, :message=>"Failed to create user."} }
       end
     end
   end
+
+  def give_me_pengin_password
+    return ["SAURON","SMAUG","BILBO","RING","FRODO","MORDOR","THE SHIRE","HOBBIT","FANGORN","ELVEN","THE FORCE","STAR WARS","VADER","DARTH","YODA","SKYWALKER"].sample
+  end
+
+
+  # TODO: resend method and route 
+  # def resend
+  #   @user = User.find(params[:id])
+  #   Authy::API.request_sms(id: @user.authy_id)
+  #   # TODO: json response
+  #   # flash[:notice] = "Verification code re-sent"
+  #   # redirect_to verify_path
+  # end
+
+  def send_message(message, user)
+    @user = user
+    twilio_number = '+14845772911'
+    @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
+    message = @client.account.messages.create(
+      :from => twilio_number,
+      :to => @user.country_code+@user.phone_number,
+      :body => message
+    )
+    puts message.to
+  end
+
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -124,7 +158,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :phone_number, :password_digest, :password, :password_confirmation, :avatar, :description)
+      params.require(:user).permit(:first_name, :last_name, :country_code, :phone_number, :avatar, :description, :password_digest, :password, :password_confirmation)
     end
 
 end

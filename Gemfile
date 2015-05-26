@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.2.2'
 
-gem 'rails', '4.0.4'
+gem 'rails', '4.1.6'
 gem 'sass-rails', '~> 4.0.2'
 gem 'bootstrap-sass', '2.3.2.0'
 gem 'uglifier', '>= 1.3.0'
@@ -11,11 +11,14 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 gem 'kaminari'
-
-gem 'puma' # for aws
-
 gem 'sqlite3'
 
+# for aws
+gem 'puma'
+# Use Authy for sending one time password through sms
+gem 'authy'
+# Use Twilio to send confirmation message
+gem 'twilio-ruby', '~> 3.12'
 # for having images in the database
 gem "paperclip", "~> 4.2"
 

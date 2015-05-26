@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150313163750) do
+ActiveRecord::Schema.define(version: 20150524135146) do
 
   create_table "activities", force: true do |t|
     t.string   "name"
@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 20150313163750) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "phone_number"
-    t.string   "password_digest"
     t.text     "description"
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
@@ -76,6 +75,10 @@ ActiveRecord::Schema.define(version: 20150313163750) do
     t.datetime "avatar_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "authy_id"
+    t.boolean  "verified"
+    t.string   "country_code"
+    t.string   "password_digest"
   end
 
 end

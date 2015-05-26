@@ -2,11 +2,11 @@
 
 ##Users:
 
-###1. Login
+###1. Sign up
 
-*TODO: integrate Twilio*
+When making the sign up request, the user is created in the data base and the request for the one time password sms is made. The user will receive a one time password on the inputed phone number. The user will input that password and the app will make a login request with that password and the user's phone number and country code. (see login).
 
-**POST** http://pengin-api.herokuapp.com/login
+**POST** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users
 
 *Header:*
 
@@ -15,6 +15,54 @@
 
 *Body:*
 
+* country_code
+* phone_number
+* first_name
+* last_name
+* description
+* avatar (file upload)
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F "user[country_code]=+40" -F "user[phone_number]=724017240" -F "user[first_name]=Sulfus" -F "user[last_name]=Vader" -F "user[description]=Come to the dark side" -F "user[avatar]=@owl.jpg" http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users
+```
+
+Answer:
+
+```
+{
+	"success":true,
+	"message":"User was successfully created.",
+	"id":3
+}
+```
+
+---
+
+
+###2. Login
+
+####Step 1 - request a sms password
+
+
+
+####Step 2 - verify the sms password
+
+You make the login request after the user has inputed the password in the sms. 
+
+**POST** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/login
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+
+*Body:*
+
+* country_code
 * phone_number
 * password
 
@@ -23,7 +71,7 @@
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://pengin-api.herokuapp.com/login -d '{ "session" : {"phone_number" : "+40724017240", "password" : "foobar13"}}'
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/login -d '{ "session" : {"country_code" : "+40", "phone_number" : "724017240", "password" : "SMAUG"}}'
 ```
 
 Answer:
@@ -35,14 +83,28 @@ Answer:
 	"acc_token":"8_SvVe2lNambLmwMJUJMlA",
 	"id":1
 }
+
+or
+
+{
+	"success":false,
+	"message":"Acc_token already exists. You can't use the same password to auth a second time. Logout and login again."
+}
+
+or
+
+{
+	"success":false,
+	"message":"Invalid phone/password combination"
+}
 ```
 
 ---
 
 
-###2. Logout
+###3. Logout
 
-**DELETE** http://pengin-api.herokuapp.com/logout
+**DELETE** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/logout
 
 *Header:*
 
@@ -55,7 +117,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X DELETE https://pengin-api.herokuapp.com/logout -H 'Authorization: Token token=4FHcyehbIlpALoUGBecuDA'
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X DELETE http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/logout -H 'Authorization: Token token=4FHcyehbIlpALoUGBecuDA'
 ```
 
 Answer:
@@ -70,54 +132,9 @@ Answer:
 ---
 
 
-###3. Sign up
-
-*TODO: login when signing up*
-
-*TODO: integrate Twilio*
-
-**POST** http://pengin-api.herokuapp.com/users
-
-*Header:*
-
-* **Content-Type:** application/json
-* **Accept:** application/json
-
-*Body:*
-
-* phone_number
-* first_name
-* last_name
-* avatar (file upload)
-* description
-* password
-* password_confirmation
-
-**Returns: json**
-
-### Terminal example
-
-```
-$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F "user[first_name]=Darth" -F "user[last_name]=Vader" -F "user[phone_number]=+40721300606" -F "user[description]=Come to the dark side" -F "user[avatar]=@owl.jpg" -F "user[password]=foobar13" -F "user[password_confirmation]=foobar13" http://pengin-api.herokuapp.com/users
-```
-
-Answer:
-
-```
-{
-	"success":true,
-	"message":"User was successfully created.",
-	"id":3
-}
-```
-
-
----
-
-
 ###4. Get profile info
 
-**GET** http://pengin-api.herokuapp.com/users/[:id]
+**GET** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users/[:id]
 
 *Header:*
 
@@ -130,7 +147,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' GET 'http://localhost:3000/users/1' -H 'Authorization: Token token=4FHcyehbIlpALoUGBecuDA'
+$ curl -H 'Accept: application/json' GET 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users/1' -H 'Authorization: Token token=4FHcyehbIlpALoUGBecuDA'
 ```
 
 Answer:
@@ -153,7 +170,7 @@ Answer:
 
 ###5. Edit profile info (mandatory) and their interests (optional)
 
-**PATCH** http://pengin-api.herokuapp.com/users/[:id]
+**PATCH** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users/[:id]
 
 *Header:*
 
@@ -185,7 +202,7 @@ The interest ids passed must belong to the interests the user wants. The new int
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -X PATCH 'http://localhost:3000/users/1' -F "user[first_name]=Mango" -F "user[last_name]=Fish" -F "user_interests[]=13" -F "user_interests[]=10" -F "user_interests[]=8"
+$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -X PATCH 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users/1' -F "user[first_name]=Mango" -F "user[last_name]=Fish" -F "user_interests[]=13" -F "user_interests[]=10" -F "user_interests[]=8"
 ```
 
 Answer:
@@ -205,7 +222,7 @@ Answer:
 
 ###6. Get categories
 
-**GET** http://pengin-api.herokuapp.com/interest_categories
+**GET** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/interest_categories
 
 *Header:*
 
@@ -218,7 +235,7 @@ Should we pass auth_token here, too for tracking?
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' GET 'http://pengin-api.herokuapp.com/interest_categories'
+$ curl -H 'Accept: application/json' GET 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/interest_categories'
 ```
 
 Answer:
@@ -239,7 +256,7 @@ Answer:
 
 ###7. Get interests in a category
 
-**GET** http://pengin-api.herokuapp.com/interests_of_category?interest_category_id=[:category_id]
+**GET** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/interests_of_category?interest_category_id=[:category_id]
 
 *Header:*
 
@@ -252,7 +269,7 @@ Should we pass auth_token here, too for tracking?
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' GET 'http://pengin-api.herokuapp.com/interests_of_category?interest_category_id=4'
+$ curl -H 'Accept: application/json' GET 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/interests_of_category?interest_category_id=4'
 ```
 
 Answer:
@@ -272,7 +289,7 @@ Answer:
 
 ###8. Get interests of current user
 
-**GET** http://pengin-api.herokuapp.com/my_interests
+**GET** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/my_interests
 
 *Header:*
 
@@ -285,7 +302,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' GET 'http://localhost:3000/my_interests' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w'
+$ curl -H 'Accept: application/json' GET 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/my_interests' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w'
 ```
 
 Answer:
@@ -306,7 +323,7 @@ Answer:
 
 *separate link just for interests in case no user data is altered (so it doesn't depend on user edit)*
 
-**POST** http://pengin-api.herokuapp.com/edit_my_interests
+**POST** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/edit_my_interests
 
 *Header:*
 
@@ -326,7 +343,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0MJCmIu6vxzQtFr_AOWf5w' -X POST 'http://pengin-api.herokuapp.com/edit_my_interests' -F "user_interests[]=10" -F "user_interests[]=9"
+$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0MJCmIu6vxzQtFr_AOWf5w' -X POST 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/edit_my_interests' -F "user_interests[]=10" -F "user_interests[]=9"
 ```
 
 Answer:
@@ -351,7 +368,7 @@ or if the token is damaged
 
 ###10. Create activity
 
-**POST** http://pengin-api.herokuapp.com/activities
+**POST** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/activities
 
 *Header:*
 
@@ -371,7 +388,7 @@ or if the token is damaged
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -F "activity[name]=Dog chase" -F "activity[location]=Parcul Tineretului" -F "activity[time]=2015-03-20T06:50:37.283Z" -F "activity[nrofpeopleinvited]=2" 'http://pengin-api.herokuapp.com/activities'
+$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -F "activity[name]=Dog chase" -F "activity[location]=Parcul Tineretului" -F "activity[time]=2015-03-20T06:50:37.283Z" -F "activity[nrofpeopleinvited]=2" 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/activities'
 ```
 
 Answer:
@@ -397,7 +414,7 @@ Answer:
 
 *returns 2 json arrays - the first one has the activities I created, even if I am not going to them - and the second one has all the activities I am going to*
 
-**GET** http://pengin-api.herokuapp.com/my_activities
+**GET** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/my_activities
 
 *Header:*
 
@@ -410,7 +427,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' GET 'http://pengin-api.herokuapp.com/my_activities'
+$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' GET 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/my_activities'
 ```
 
 Answer:
@@ -439,7 +456,7 @@ Answer:
 
 *returns the activities of those people with 2 or more interests in common with current_user*
 
-**GET** http://pengin-api.herokuapp.com/my_feed
+**GET** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/my_feed
 
 *Header:*
 
@@ -452,7 +469,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' GET 'http://pengin-api.herokuapp.com/my_feed'
+$ curl -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' GET 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/my_feed'
 ```
 
 Answer:
@@ -471,7 +488,7 @@ Answer:
 
 ###13. Edit activity
 
-**PATCH** http://pengin-api.herokuapp.com/activities/[:id]
+**PATCH** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/activities/[:id]
 
 *Header:*
 
@@ -493,7 +510,7 @@ At least one of these attributes
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' -X PATCH 'http://pengin-api.herokuapp.com/activities/2' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -d 'activity[location]=Strada cu Pisici'
+$ curl -H 'Accept: application/json' -X PATCH 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/activities/2' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -d 'activity[location]=Strada cu Pisici'
 ```
 
 Answer:
@@ -508,7 +525,7 @@ Answer:
 
 ###14. Delete activity
 
-**DELETE** http://pengin-api.herokuapp.com/activities/[:id]
+**DELETE** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/activities/[:id]
 
 *Header:*
 
@@ -521,7 +538,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Accept: application/json' -X DELETE 'http://pengin-api.herokuapp.com/activities/4' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w'
+$ curl -H 'Accept: application/json' -X DELETE 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/activities/4' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w'
 ```
 
 Answer:

@@ -3,24 +3,64 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(phone_number: params[:session][:phone_number].downcase)
-    if user && user.authenticate(params[:session][:password])
-      # login current user
-      puts "user = " + user.id.to_s
-      log_in user # nu cred ca log_in user il seteaza si pe current user pt ca... n-au legatura
-      # add its access token - expiration and token are created automatically (see the Api_key model)
-      ApiKey.create(user_id: current_user.id) # if it already exists, it will just rollback the transaction and proceed
-      respond_to do |format|
-        format.html { redirect_to root_path }
-        format.json { render :json => {:success=>true, :message=>"The user has been logged in", :acc_token => ApiKey.find_by_user_id(current_user.id).access_token, :id => current_user.id} }
+    
+    user = User.find_by(phone_number: params[:session][:phone_number], country_code: params[:session][:country_code])
+    existing_acc_token = ApiKey.find_by(user_id: user.id)
+
+    # if user
+    #   puts "user_id = " + user.id.to_s
+      
+    #   existing_acc_token = ApiKey.find_by(user_id: user.id)
+
+    #   if existing_acc_token
+    #   puts "acc_token = " + existing_acc_token.to_s
+    #   else
+    #     puts "no acc_token"
+    #   end
+
+    #   if user.password_digest
+    #     puts "password_digest = " + user.password_digest.to_s
+    #   else
+    #     puts "no password_digest"
+    #   end
+
+    # else
+    #   puts "user not found"
+    # end
+
+    if user && user.authenticate(params[:session][:password]) 
+
+      if !existing_acc_token
+      
+        log_in user # nu cred ca log_in user il seteaza si pe current user pt ca... n-au legatura
+        # add its access token - expiration and token are created automatically (see the Api_key model)
+        
+        ApiKey.create(user_id: current_user.id) # if it already exists, it will just rollback the transaction and proceed
+        
+        current_user.update(verified: true)
+        
+        # after the first login, no one can then get the acc_token by introducing the one time password
+        # if there is an acc_token in the database, invalid any attemtp to get it by password
+        # dc pierde aplicatia acc_tokenul, nu poate sa mai logheze vreodata pt ca tre mai intai sa dea logout si apoi sa request a new acc_token
+
+        respond_to do |format|
+          format.json { render :json => {:success=>true, :message=>"The user has been logged in", :acc_token => ApiKey.find_by_user_id(current_user.id).access_token, :id => current_user.id} }
+        end
+
+      else
+        respond_to do |format|
+          format.json { render :json => {:success=>false, :message=>"Acc_token already exists. You can't use the same password to auth a second time. Logout and login again."} }
+        end        
       end
+    
     else
-      flash.now[:danger] = 'Invalid email/password combination'
+
       respond_to do |format|
-        format.html { redirect_to login_path }
-        format.json { render :json => {:success=>false, :message=>"Invalid email/password combination"} }
+        format.json { render :json => {:success=>false, :message=>"Invalid phone/password combination"} }
       end
+    
     end
+
   end
 
   def destroy
@@ -38,7 +78,7 @@ class SessionsController < ApplicationController
             log_out 
 
             respond_to do |format|
-              format.html { redirect_to login_path }
+              # format.html { redirect_to login_path }
               format.json { render :json => {:success=>true, :message=>"The user has been logged out"} }
             end
         
@@ -51,7 +91,7 @@ class SessionsController < ApplicationController
 
         else # if ApiKey are acc_tokenul pasat
           respond_to do |format|
-            format.html { redirect_to login_path }
+            # format.html { redirect_to login_path }
             format.json { render :json => {:success=>false, :message=>"Logout failed - no acc_token found in db"} }
           end        
         end
@@ -64,7 +104,7 @@ class SessionsController < ApplicationController
       # end
     else # if params acc_token
       respond_to do |format|
-        format.html { redirect_to login_path }
+        # format.html { redirect_to login_path }
         format.json { render :json => {:success=>false, :message=>"Logout failed - no acc_token in params"} }
       end
     end
