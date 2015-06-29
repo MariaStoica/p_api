@@ -424,7 +424,7 @@ or if the token is damaged
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -H 'Authorization: Token token=0fxLFtgI1oj8IYsFV6HB5w' -F "activity[name]=Dog chase" -F "activity[location]=Parcul Tineretului" -F "activity[time]=2015-03-20T06:50:37.283Z" -F "activity[nrofpeopleinvited]=2" 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/activities'
+$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -H 'Authorization: Token token=nQAh-ZsnACPrVJG-YEsmMQ' -F "activity[name]=Dog chase" -F "activity[location]=Parcul Tineretului" -F "activity[time]=2015-03-20T06:50:37.283Z" -F "activity[nrofpeopleinvited]=2" 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/activities'
 ```
 
 Answer:
@@ -583,4 +583,114 @@ Answer:
 {"success":true,"message":"Activity was successfully destroyed."}
 ```
 
+
+---
+
+
+###15. Create comment
+
+* you can only post comments to an activity you are going to (this check is done in the api and if it fails, see json responses below)
+
+**POST** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/comments
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token]'
+
+*Body:*
+
+* activity_id
+* content
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -H 'Authorization: Token token=nQAh-ZsnACPrVJG-YEsmMQ' -F "comment[activity_id]=1" -F "comment[content]=It's a holly-hollyday." 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/comments'
+```
+
+Answer:
+
+```
+{"id":3,"user_id":1,"activity_id":8,"content":"Oh.","created_at":"2015-06-25T14:32:39.861Z","updated_at":"2015-06-25T14:32:39.861Z"}
+
+or
+
+{"success":false,"message":"You're not going to this activity so you can't post comments."}
+```
+
+
+---
+
+
+###16. Delete comment
+
+* only the owner of the comment can delete the comment (this check is done in the api and if it fails, see json responses below)
+
+**DELETE** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/comments/1
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token_of_activity_owner]'
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Accept: application/json' -X DELETE 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/comments/1' -H 'Authorization: Token token=nQAh-ZsnACPrVJG-YEsmMQ'
+```
+
+Answer:
+
+```
+{"success":true,"message":"Comment was successfully destroyed."}
+
+or
+
+{"success":false,"message":"You are not the owner of this comment."}
+```
+
+
+---
+
+
+###17. Get comments for one activity
+
+* only the users going to this activity can see its comments (this check is done in the api and if it fails, see json responses below)
+
+* all comments are returned for now. There is no paging, yet.
+
+**GET** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/comments?activity_id=[:activity_id]
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token]'
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Accept: application/json' -H 'Authorization: Token token=nQAh-ZsnACPrVJG-YEsmMQ' GET 'http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/comments?activity_id=1'
+```
+
+Answer:
+
+```
+[
+	{"id":1,"user_id":1,"activity_id":7,"content":"Oh you can run in the sun having fun with them all.","created_at":"2015-06-25T14:21:50.060Z"}
+]
+
+or
+
+{"success":false,"message":"You're not going to this activity so you can't see its comments."}
+```
 
