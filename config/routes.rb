@@ -1,5 +1,13 @@
 PenginApi::Application.routes.draw do
 
+  # get 'comments/index'
+
+  # get 'comments/new'
+
+  # get 'comments/create'
+
+  # get 'comments/destroy'
+
 	get    'signup'  => 'users#new'
 	get    'login'   => 'sessions#new'
 	post   'login'   => 'sessions#create'
@@ -19,6 +27,7 @@ PenginApi::Application.routes.draw do
     resources :interests
     resources :activities
     resources :goingtoactivities
+    resources :comments
 
 	root to: "home#welcome"
 

@@ -10,8 +10,8 @@ class GoingtoactivitiesController < ApplicationController
 
   # GET /goingtoactivities/1
   # GET /goingtoactivities/1.json
-  def show
-  end
+  # def show
+  # end
 
   # GET /goingtoactivities/new
   def new
@@ -19,8 +19,8 @@ class GoingtoactivitiesController < ApplicationController
   end
 
   # GET /goingtoactivities/1/edit
-  def edit
-  end
+  # def edit
+  # end
 
   # POST /goingtoactivities
   # POST /goingtoactivities.json
@@ -49,30 +49,30 @@ class GoingtoactivitiesController < ApplicationController
       end
     else
       respond_to do |format|
-        format.json { render :json => {:success=>false, :message=>"You are not the owner of this goingtoactivity."} }
+        format.json { render :json => {:success=>false, :message=>"You are not the owner of this user id."} }
       end
     end
   end
 
   # PATCH/PUT /goingtoactivities/1
   # PATCH/PUT /goingtoactivities/1.json
-  def update
-    if current_user.id == @goingtoactivity.user_id
-      respond_to do |format|
-        if @goingtoactivity.update(goingtoactivity_params)
-          format.html { redirect_to @goingtoactivity, notice: 'Goingtoactivity was successfully updated.' }
-          format.json { render :show, status: :ok, location: @goingtoactivity }
-        else
-          format.html { render :edit }
-          format.json { render json: @goingtoactivity.errors, status: :unprocessable_entity }
-        end
-      end
-    else
-      respond_to do |format|
-        format.json { render :json => {:success=>false, :message=>"You are not the owner of this goingtoactivity."} }
-      end
-    end
-  end
+  # def update
+  #   if current_user.id == @goingtoactivity.user_id
+  #     respond_to do |format|
+  #       if @goingtoactivity.update(goingtoactivity_params)
+  #         format.html { redirect_to @goingtoactivity, notice: 'Goingtoactivity was successfully updated.' }
+  #         format.json { render :show, status: :ok, location: @goingtoactivity }
+  #       else
+  #         format.html { render :edit }
+  #         format.json { render json: @goingtoactivity.errors, status: :unprocessable_entity }
+  #       end
+  #     end
+  #   else
+  #     respond_to do |format|
+  #       format.json { render :json => {:success=>false, :message=>"You are not the owner of this user id."} }
+  #     end
+  #   end
+  # end
 
   # DELETE /goingtoactivities/1
   # DELETE /goingtoactivities/1.json
@@ -84,7 +84,7 @@ class GoingtoactivitiesController < ApplicationController
       end
     else
       respond_to do |format|
-        format.json { render :json => {:success=>false, :message=>"You are not the owner of this goingtoactivity."} }
+        format.json { render :json => {:success=>false, :message=>"You are not the owner of this user id."} }
       end
     end
   end

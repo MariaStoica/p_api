@@ -1,25 +1,27 @@
-<%= form_for(@interest) do |f| %>
-  <% if @interest.errors.any? %>
+<!--
+<= form_for(@interest) do |f| %>
+  < if @interest.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@interest.errors.count, "error") %> prohibited this interest from being saved:</h2>
+      <h2><= pluralize(@interest.errors.count, "error") %> prohibited this interest from being saved:</h2>
 
       <ul>
-      <% @interest.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+      < @interest.errors.full_messages.each do |msg| %>
+        <li><= msg %></li>
+      < end %>
       </ul>
     </div>
-  <% end %>
+  < end %>
 
   <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <= f.label :name %><br>
+    <= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :category_id %><br>
-    <%= f.number_field :category_id %>
+    <= f.label :category_id %><br>
+    <= f.number_field :category_id %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <= f.submit %>
   </div>
-<% end %>
+< end %>
+-->

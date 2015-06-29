@@ -1,3 +1,4 @@
+<!--
 <h1>Listing user_interests</h1>
 
 <table>
@@ -12,18 +13,19 @@
   </thead>
 
   <tbody>
-    <% @user_interests.each do |user_interest| %>
+    < @user_interests.each do |user_interest| %>
       <tr>
-        <td><%= user_interest.user_id %></td>
-        <td><%= user_interest.interest_id %></td>
-        <td><%= link_to 'Show', user_interest %></td>
-        <td><%= link_to 'Edit', edit_user_interest_path(user_interest) %></td>
-        <td><%= link_to 'Destroy', user_interest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><= user_interest.user_id %></td>
+        <td><= user_interest.interest_id %></td>
+        <td><= link_to 'Show', user_interest %></td>
+        <td><= link_to 'Edit', edit_user_interest_path(user_interest) %></td>
+        <td><= link_to 'Destroy', user_interest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
-    <% end %>
+    < end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New User interest', new_user_interest_path %>
+<= link_to 'New User interest', new_user_interest_path %>
+-->

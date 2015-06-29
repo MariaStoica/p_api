@@ -1,37 +1,39 @@
-<%= form_for(@activity) do |f| %>
-  <% if @activity.errors.any? %>
+<!--
+<= form_for(@activity) do |f| %>
+  < if @activity.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@activity.errors.count, "error") %> prohibited this activity from being saved:</h2>
+      <h2><= pluralize(@activity.errors.count, "error") %> prohibited this activity from being saved:</h2>
 
       <ul>
-      <% @activity.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+      < @activity.errors.full_messages.each do |msg| %>
+        <li><= msg %></li>
+      < end %>
       </ul>
     </div>
-  <% end %>
+  < end %>
 
   <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <= f.label :name %><br>
+    <= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
+    <= f.label :user_id %><br>
+    <= f.number_field :user_id %>
   </div>
   <div class="field">
-    <%= f.label :location %><br>
-    <%= f.text_field :location %>
+    <= f.label :location %><br>
+    <= f.text_field :location %>
   </div>
   <div class="field">
-    <%= f.label :time %><br>
-    <%= f.datetime_select :time %>
+    <= f.label :time %><br>
+    <= f.datetime_select :time %>
   </div>
   <div class="field">
-    <%= f.label :nrofpeopleinvited %><br>
-    <%= f.number_field :nrofpeopleinvited %>
+    <= f.label :nrofpeopleinvited %><br>
+    <= f.number_field :nrofpeopleinvited %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <= f.submit %>
   </div>
-<% end %>
+< end %>
+-->

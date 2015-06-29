@@ -35,16 +35,14 @@ class ActivitiesController < ApplicationController
           # add owner to going to activity
           Goingtoactivity.create(user_id: @activity.user_id, activity_id: @activity.id)
 
-          format.html { redirect_to @activity, notice: 'Activity was successfully created.' }
           format.json { render :show, status: :created, location: @activity }
         else
-          format.html { render :new }
           format.json { render json: @activity.errors, status: :unprocessable_entity }
         end
       end
     else
       respond_to do |format|
-        format.json { render :json => {:success=>true, :message=>"Something's wrong with the token. current_user is nil."} }
+        format.json { render :json => {:success=>false, :message=>"Something's wrong with the token. current_user is nil."} }
       end
     end
   end
@@ -58,7 +56,7 @@ class ActivitiesController < ApplicationController
         if @activity.update(activity_params)
           format.json { render :json => {:success=>true, :message=>"Activity was successfully updated."} }
         else
-          format.json { render :json => {:success=>true, :message=>"Something went wrong. Could not update activity."} }
+          format.json { render :json => {:success=>false, :message=>"Something went wrong. Could not update activity."} }
         end
       end
     else
@@ -75,6 +73,8 @@ class ActivitiesController < ApplicationController
     if current_user.id == @activity.user_id
       # also delete all goingtoactivities that have this actvity
       Goingtoactivity.where(activity_id: @activity.id).delete_all
+      # also delete all comments of that activity
+      Comments.where(activity_id: @activity.id).delete_all
 
       @activity.destroy
       respond_to do |format|
@@ -96,6 +96,6 @@ class ActivitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activity_params
-      params.require(:activity).permit(:name, :user_id, :location, :time, :nrofpeopleinvited)
+      params.require(:activity).permit(:name, :user_id, :location, :time, :nrofpeopleinvited, :description)
     end
 end

@@ -1,3 +1,4 @@
+<!--
 <h1>Listing api_keys</h1>
 
 <table>
@@ -13,19 +14,20 @@
   </thead>
 
   <tbody>
-    <% @api_keys.each do |api_key| %>
+    < @api_keys.each do |api_key| %>
       <tr>
-        <td><%= api_key.access_token %></td>
-        <td><%= api_key.user_id %></td>
-        <td><%= api_key.expires_at %></td>
-        <td><%= link_to 'Show', api_key %></td>
-        <td><%= link_to 'Edit', edit_api_key_path(api_key) %></td>
-        <td><%= link_to 'Destroy', api_key, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><= api_key.access_token %></td>
+        <td><= api_key.user_id %></td>
+        <td><= api_key.expires_at %></td>
+        <td><= link_to 'Show', api_key %></td>
+        <td><= link_to 'Edit', edit_api_key_path(api_key) %></td>
+        <td><= link_to 'Destroy', api_key, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
-    <% end %>
+    < end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Api key', new_api_key_path %>
+<= link_to 'New Api key', new_api_key_path %>
+-->

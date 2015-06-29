@@ -113,6 +113,7 @@ Activities
 			<th>Time</th>
 			<th>Nr of people invited</th>
 			<th>Owner</th>
+			<th>Description</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -124,6 +125,26 @@ Activities
 				<td><%= act.time %> (<%= time_ago_in_words(act.time) %>)</td>
 				<td><%= act.nrofpeopleinvited %></td>
 				<td><%= User.find(act.user_id).first_name %> (<%= act.user_id %>)</td>
+				<td>
+					<% if act.description %>
+						<%= act.description %>
+					<% else %>
+						-
+					<% end %>
+				</td>
+			</tr>
+			<!-- comments of this activity -->
+			<tr>
+				<% Comment.where(activity_id: act.id).each do |comment| %>
+					<div class="panel panel-primary">
+					  <div class="panel-heading">
+					    <h3 class="panel-title"><%= User.find(comment.user_id).first_name %>(<%= comment.user_id %>) <%= act.name %>(<%= act.id %>)</h3>
+					  </div>
+					  <div class="panel-body">
+					    <%= comment.content %>
+					  </div>
+					</div>
+				<% end %>
 			</tr>
 		<% end %>
 	</tbody>

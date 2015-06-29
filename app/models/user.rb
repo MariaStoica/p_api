@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
 	validates :last_name,    presence: true, length: { maximum: 50 }
 	validates :first_name,   presence: true, length: { maximum: 50 }	
-	validates :description,  length: { maximum: 500 }
+	validates :description,  length: { maximum: 250 }
 
 	# the paperclip avatar (user's profile image)
 	has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"

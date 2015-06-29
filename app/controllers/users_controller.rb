@@ -140,14 +140,11 @@ class UsersController < ApplicationController
               end
             end
 
-            format.html { redirect_to @user, notice: 'User and user interests was successfully updated.' }
             format.json { render :json => {:success=>true, :message=>"User and user interests was successfully updated."} }
           else
-            format.html { redirect_to @user, notice: 'User was successfully updated. No user interests detected.' }
             format.json { render :json => {:success=>true, :message=>"User was successfully updated. No user interests detected."} }
           end # end of if params
         else
-          format.html { render :edit }
           format.json { render :json => {:success=>false, :message=>"User could not be updated."} }
         end # end of if .update
       end # end of respond
@@ -163,7 +160,6 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { render :json => {:success=>true, :message=>"User was successfully destroyed."} }
     end
   end
