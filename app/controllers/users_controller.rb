@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate, except: [:create, :request_sms_for_login]
+  before_action :authenticate, except: [:create, :request_sms_for_login, :request_sms_for_login_html]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -63,20 +63,25 @@ class UsersController < ApplicationController
     )
 
       respond_to do |format|
+        format.html { redirect_to login_path, notice: "SMS sent." }
         format.json { render :json => {:success=>true, :message=>"SMS sent."} }
       end
     
     else
     
       respond_to do |format|
+        format.html { redirect_to root_path, notice: "Could not send SMS." }
         format.json { render :json => {:success=>false, :message=>"Could not send SMS."} }
       end
 
     end
   end
 
+  def request_sms_for_login_html
+  end
+
   def request_sms_for_login
-    user = User.find_by(phone_number: params[:phone_number], country_code: params[:country_code])
+    user = User.find_by(country_code: params[:user][:country_code], phone_number: params[:user][:phone_number])
 
     if user
       password = give_me_pengin_password
@@ -85,8 +90,10 @@ class UsersController < ApplicationController
 
       #send sms with our own password
       send_message("Greetings from PengIn! Your password is " + password, user)
+
     else
       respond_to do |format|
+        format.html { redirect_to request_sms_path, notice: "No such user." }
         format.json { render :json => {:success=>false, :message=>"User does not exist. Sign up, perhaps?"} }
       end
     end

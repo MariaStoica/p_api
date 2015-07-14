@@ -153,7 +153,7 @@ or
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X DELETE http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/logout?acc_token=Dlcz-9zgp_u2QSOxBT2vcg
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X DELETE http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/logout?acc_token=oZt0bUSbiwLQEXmKvc6Orw
 ```
 
 Answer:

@@ -128,4 +128,10 @@ class SessionsController < ApplicationController
 
   end # end of destroy
 
+
+
+
+
+
+
 end
