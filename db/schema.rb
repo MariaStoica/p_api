@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150625134416) do
+ActiveRecord::Schema.define(version: 20150629101611) do
 
   create_table "activities", force: true do |t|
     t.string   "name"
@@ -65,6 +65,15 @@ ActiveRecord::Schema.define(version: 20150625134416) do
   end
 
   add_index "interests", ["category_id"], name: "index_interests_on_category_id"
+
+  create_table "pending_interests", force: true do |t|
+    t.text     "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "pending_interests", ["user_id"], name: "index_pending_interests_on_user_id"
 
   create_table "user_interests", force: true do |t|
     t.integer  "user_id"

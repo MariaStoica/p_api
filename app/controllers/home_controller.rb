@@ -1,8 +1,15 @@
 class HomeController < ApplicationController
 
-  before_action :authenticate, except: :welcome
+  before_action :authenticate, except: [:welcome, :database, :pending_interests]
+  before_action :auth_us_PengIn, only: [:database, :pending_interests]
 
   def welcome
+  end
+
+  def database
+  end
+
+  def pending_interests
   end
 
   def get_interest_categories

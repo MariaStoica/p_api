@@ -14,26 +14,30 @@
 
 <!-- bara de sus -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<%= puts "session user id = " + session[:user_id].to_s %>
 		<!-- home and api calls -->
 		<div class="container-fluid">
+		<% if logged_in? %>
 			<div class="navbar-header">
-				<b><%= link_to "PengIn", root_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
+				<b><%= link_to "Data Base", database_path(:acc_token => ApiKey.find_by(user_id: current_user.id).access_token.to_s), class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
 			</div>
 			<div class="navbar-header">
-				<!-- <b><= link_to "API calls", root_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b> -->
+				<% if PendingInterest.all.count > 0 %>
+					<b><%= link_to PendingInterest.all.count.to_s + " pending interests", pending_interests_path(:acc_token => ApiKey.find_by(user_id: current_user.id).access_token.to_s), class: "navbar-brand", style: "position:relative; left:40px; font-family: Book Antiqua, serif; font-size: 20px; color:red" %></b>
+				<% else %>
+					<b><%= link_to "No pending interests", pending_interests_path(:acc_token => ApiKey.find_by(user_id: current_user.id).access_token.to_s), class: "navbar-brand", style: "position:relative; left:40px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
+				<% end %>
 			</div>
 		<!-- sign in sign out -->
-		<% if logged_in? %>
 			<div class="navbar-header navbar-right">
-				<!-- <b><= link_to "Salut, " + current_user.first_name, root_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b> -->
+				<b><%= link_to "Salut, " + current_user.first_name, root_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
 			</div>
 			<div class="navbar-header navbar-right">
-				<!-- <b><= link_to "Sign out", logout_path, method: "delete", class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px"%></b> -->
-				<!-- the sign out button only works from the browser if you pass it the auth_token you are trying to logout -->
+				<b><%= link_to "Sign out", logout_path(:acc_token => ApiKey.find_by(user_id: current_user.id).access_token.to_s), method: "delete", class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px"%></b>
 			</div>
 		<% else %>
 			<div class="navbar-header navbar-right">
-				<!-- <b><= link_to "Sign in", login_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b> -->
+				<b><%= link_to "Sign in", login_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
 			</div>
 		<% end %>	
 

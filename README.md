@@ -153,7 +153,7 @@ or
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X DELETE http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/logout?acc_token=PcKwIskef0ZwAMkHkbRSFw
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X DELETE http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/logout?acc_token=Dlcz-9zgp_u2QSOxBT2vcg
 ```
 
 Answer:
@@ -693,4 +693,40 @@ or
 
 {"success":false,"message":"You're not going to this activity so you can't see its comments."}
 ```
+
+
+---
+
+
+###18. Create pending interest
+
+* any user can submit new interests. There is a interest name uniqueness restriction in the data base for the pending interests.
+
+**POST** http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/pending_interests
+
+*Header:*
+
+* **Content-Type:** application/json
+* **Accept:** application/json
+* **Authorization:** Token token=[:auth_token]'
+
+*Body:*
+
+* name
+
+**Returns: json**
+
+### Terminal example
+
+```
+$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -H 'Authorization: Token token=KB8iHy4OvO8udf0azTMFWA' -F "pending_interest[name]=burger eating" 'http://0.0.0.0:3000/pending_interests'
+```
+
+Answer:
+
+```
+{"id":2,"user_id":25,"name":"people watching","created_at":"2015-06-29T11:01:46.735Z","updated_at":"2015-06-29T11:01:46.735Z"}
+```
+
+
 

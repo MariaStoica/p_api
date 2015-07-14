@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate
-  before_action :set_comment, only: [:destroy]
+  before_action :set_comment, only: [:show, :destroy]
 
   def index
   	if params[:activity_id]
@@ -34,10 +34,9 @@ class CommentsController < ApplicationController
 
 	      respond_to do |format|
 	        if @comment.save
-
-	          format.json { render :show, status: :created, location: @activity }
+	          format.json { render :show, status: :created, location: @comment }
 	        else
-	          format.json { render json: @activity.errors, status: :unprocessable_entity }
+	          format.json { render json: @comment.errors, status: :unprocessable_entity }
 	        end
 	      end
 
