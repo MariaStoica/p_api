@@ -27,7 +27,7 @@ When making the sign up request, the user is created in the data base and the re
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F "user[country_code]=+40" -F "user[phone_number]=724611356" -F "user[first_name]=Andrei" -F "user[last_name]=Neagu" -F "user[description]=Come to the dark side" -F "user[avatar]=@owl.jpg" http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users
+$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F "user[country_code]=+40" -F "user[phone_number]=724017240" -F "user[first_name]=Maria" -F "user[last_name]=Stoica" -F "user[description]=Come to the dark side" -F "user[avatar]=@owl.jpg" http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users
 ```
 
 Answer:
