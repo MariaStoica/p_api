@@ -17,7 +17,7 @@
 		<%= puts "session user id = " + session[:user_id].to_s %>
 		<!-- home and api calls -->
 		<div class="container-fluid">
-		<% if logged_in? %>
+		<% if admin_logged_in? %>
 			<div class="navbar-header">
 				<b><%= link_to "Data Base", database_path(:acc_token => ApiKey.find_by(user_id: current_user.id).access_token.to_s), class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
 			</div>

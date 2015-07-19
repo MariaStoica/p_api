@@ -53,6 +53,9 @@
           if current_user.country_code == "+40" and (current_user.phone_number == "724017240" or current_user.phone_number == "724611356" or current_user.phone_number == "752077604")
             return true
           else
+            respond_to do |format|
+              format.html { redirect_to root_path, notice: ''}
+            end
             return false
           end
         else
@@ -68,6 +71,8 @@
         end
         return false
       end
+
+      return false
 
     # end
   end

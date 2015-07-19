@@ -28,4 +28,14 @@ module SessionsHelper
 		@current_user = nil
 	end
 
+	def admin_logged_in?
+		if logged_in?
+			if current_user.country_code == "+40" and (current_user.phone_number == "724017240" or current_user.phone_number == "724611356" or current_user.phone_number == "752077604")
+				return true
+			else
+				return false
+			end
+		end
+	end
+
 end
