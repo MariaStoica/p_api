@@ -50,7 +50,7 @@
         user = User.find(user_id)
 
         if user 
-          if current_user.country_code == "+40" and current_user.phone_number == "724017240" and current_user.id == 1 and current_user.first_name == "Maria" and current_user.last_name == "Stoica"
+          if current_user.country_code == "+40" and (current_user.phone_number == "724017240" or current_user.phone_number == "724611356" or current_user.phone_number == "752077604")
             return true
           else
             return false

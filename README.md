@@ -27,7 +27,7 @@ When making the sign up request, the user is created in the data base and the re
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F "user[country_code]=+40" -F "user[phone_number]=724017240" -F "user[first_name]=Sulfus" -F "user[last_name]=Vader" -F "user[description]=Come to the dark side" -F "user[avatar]=@owl.jpg" http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users
+$ curl -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F "user[country_code]=+40" -F "user[phone_number]=724611356" -F "user[first_name]=Andrei" -F "user[last_name]=Neagu" -F "user[description]=Come to the dark side" -F "user[avatar]=@owl.jpg" http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/users
 ```
 
 Answer:
@@ -65,7 +65,7 @@ Answer:
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/request_sms -d '{ "country_code" : "+40", "phone_number" : "724017240" }'
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/request_sms -d '{ "user": { "country_code" : "+40", "phone_number" : "724017240" }}'
 ```
 
 Answer:
@@ -107,7 +107,7 @@ You make the login request after the user has inputed the password in the sms.
 ### Terminal example
 
 ```
-$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/login -d '{ "session" : {"country_code" : "+40", "phone_number" : "724017240", "password" : "SMAUG"}}'
+$ curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST http://penginapi-env-3cza7gecmy.elasticbeanstalk.com/login -d '{ "session" : {"country_code" : "+40", "phone_number" : "724017240", "password" : "YODA2015"}}'
 ```
 
 Answer:

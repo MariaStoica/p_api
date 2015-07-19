@@ -49,7 +49,8 @@ class UsersController < ApplicationController
   end
 
   def give_me_pengin_password
-    return ["SAURON","SMAUG","BILBO","RING","FRODO","MORDOR","THE SHIRE","HOBBIT","FANGORN","ELVEN","THE FORCE","STAR WARS","VADER","DARTH","YODA","SKYWALKER"].sample
+    return ["YODA2015"].sample
+    # "SAURON","SMAUG","BILBO","RING","FRODO","MORDOR","THE SHIRE","HOBBIT","FANGORN","ELVEN","THE FORCE","STAR WARS","VADER","DARTH","YODA","SKYWALKER"
   end
 
   def send_message(message, user)

@@ -18,7 +18,7 @@
 				<td><%= interest.id %></td>
 				<td><%= interest.name %></td>
 				<td><%= User.find(interest.user_id).first_name %> <%= User.find(interest.user_id).last_name %> (id: <%= interest.user_id %>)</td>
-				<td><%= link_to "", interest, class: "glyphicon glyphicon-ok", method: :delete, :style => 'color:green; font-size:13px; position:relative; left:15px' %></td>
+				<td><%= link_to "", interest, class: "glyphicon glyphicon-ok", method: :create, :style => 'color:green; font-size:13px; position:relative; left:15px' %></td>
 				<td><%= link_to "", interest, class: "glyphicon glyphicon-trash", method: :delete, data: { confirm: 'Ya sure?' }, :style => 'color:red; font-size:13px; position:relative; left:15px' %></td>
 			</tr>
 		<% end %>
