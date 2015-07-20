@@ -15,6 +15,7 @@ PenginApi::Application.routes.draw do
 	post 'request_sms'           => 'users#request_sms_for_login'
 	get  'pending_interests'     => 'home#pending_interests'
 	get  'database'              => 'home#database'
+	get  'create_interest_from_pending' => 'pending_interests#create_interest_from_pending'
 
 	resources :api_keys
 	resources :users
